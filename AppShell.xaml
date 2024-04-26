@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="RUMMY_SCOREKEEPER.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:RUMMY_SCOREKEEPER.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Title="RUMMY_SCOREKEEPER">
+    
+    <ShellContent   
+        Title="Games"
+        ContentTemplate="{DataTemplate views:GamesPage}"
+        Route="GamesPage" />
+
+    <ShellContent   
+        Title="New Game"
+        ContentTemplate="{DataTemplate views:NewGamePage}"
+        Route="NewGamePage" />
+
+    <ShellContent
+        Title="Current Game"
+        ContentTemplate="{DataTemplate views:CurrentGamePage}"
+        Route="CurrentGamePage" />
+
+
+
+</Shell>
