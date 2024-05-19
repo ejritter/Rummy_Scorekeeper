@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mct:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+             xmlns:viewmodel="clr-namespace:RUMMY_SCOREKEEPER.ViewModel"
+             x:DataType="viewmodel:ConfirmPopupViewModel"
+             x:Class="RUMMY_SCOREKEEPER.Views.ConfirmPopupPage"
+             CanBeDismissedByTappingOutsideOfPopup="False"
+           >
+    <VerticalStackLayout>
+        <Frame>
+            <Grid ColumnDefinitions="*,*"
+                  RowDefinitions="*,*"
+                  ColumnSpacing="25"
+                  RowSpacing="25"
+                  >
+
+                <Label Grid.Column="0"
+                       Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Text="Are you sure you want to Fold'em?"
+                       FontSize="25"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                    />
+
+                <Button ClassId="Hold"
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        Text="Hold'em"
+                        Clicked="Selection"
+                    />
+
+                <Button ClassId="Fold"
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        Text="Fold'em"
+                        Clicked="Selection"
+                    />
+
+
+
+            </Grid>
+        </Frame>
+    </VerticalStackLayout>
+</mct:Popup>

@@ -29,8 +29,11 @@ namespace RUMMY_SCOREKEEPER
             builder.Services.AddTransient<NewGamePage>();
             builder.Services.AddTransient<NewGameViewModel>();
 
-            builder.Services.AddSingleton<CurrentGamePage>();
-            builder.Services.AddSingleton<CurrentGameViewModel>();
+            builder.Services.AddTransient<CurrentGamePage>();
+            builder.Services.AddTransient<CurrentGameViewModel>();
+
+            //builder.Services.AddTransient<ConfirmPopupPage>();
+            //builder.Services.AddTransient<ConfirmPopupViewModel>();
 
             return builder.Build();
         }

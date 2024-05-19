@@ -5,13 +5,33 @@
              xmlns:model="clr-namespace:RUMMY_SCOREKEEPER.Model"
              x:DataType="viewmodel:GamesViewModel"
              x:Class="RUMMY_SCOREKEEPER.Views.GamesPage"
-             Title="Games Page"
+             Title=""
              >
 
 
     <VerticalStackLayout Spacing="10" Margin="5">
-
         <Grid x:Name="PlayerGrid"
+              ColumnDefinitions="100,*" 
+              ColumnSpacing="4" 
+              RowDefinitions="Auto, 100,*, *"
+              RowSpacing="4"
+              >
+
+
+            <Button Text="Start a new game!"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="3" 
+                    >
+                <Button.GestureRecognizers>
+                    <TapGestureRecognizer
+                            Command="{Binding StartNewGameCommand}"
+                            />
+                </Button.GestureRecognizers>
+
+            </Button>
+
+        </Grid>
+        <!--<Grid x:Name="PlayerGrid"
               RowDefinitions="Auto, 100,*, *"
               ColumnDefinitions="100,*" 
               ColumnSpacing="4" 
@@ -26,7 +46,8 @@
                    Grid.ColumnSpan="2"
                    Grid.Row="0"
                    />
-            
+
+
             <Button x:Name="addBtn"
                     Grid.Column="0"
                     Grid.Row="1"
@@ -35,21 +56,16 @@
                     HeightRequest="40"
                     />
 
-            <!--<Button Grid.Column="1"
-                    x:Name="removeBtn"
-                    Text="Remove Player"
-                    Clicked="RemovePlayerBtn_Clicked" 
-                    HeightRequest="40"
-                    />-->
 
             <Entry  x:Name="NameText"
                     ClassId="NameText"
                     Text="{Binding Text}"
                     Grid.Column="1"
                     Grid.Row="1"
-                    Placeholder="Enter Name Here"
+                    Placeholder="2 - 6 players"
                     HeightRequest="40"
-                    MaxLength="20"
+                    MaxLength="100"
+                    Keyboard="Text"
                     />
             <CollectionView Grid.ColumnSpan="2"
                             Grid.Row="2"
@@ -67,6 +83,15 @@
                                                />
                                 </SwipeItems>
                             </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Delete"
+                                               BackgroundColor="Red"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:GamesViewModel}}, Path=DeletePlayerBtnCommand}"
+                                               CommandParameter="{Binding Name}"
+                                               />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
                             <Frame>
                                 <Label Text="{Binding Name}"
                                        FontSize="24"
@@ -91,6 +116,6 @@
             </Button>
 
 
-        </Grid>
+        </Grid>-->
     </VerticalStackLayout>
 </ContentPage>

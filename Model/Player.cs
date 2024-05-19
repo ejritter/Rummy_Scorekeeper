@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RUMMY_SCOREKEEPER.Model;
+﻿namespace RUMMY_SCOREKEEPER.Model;
 
 public partial class Player : ObservableObject
 {
@@ -30,6 +24,7 @@ public partial class Player : ObservableObject
             OnPropertyChanged();
         }
     }
+
 
     public Player()
     {

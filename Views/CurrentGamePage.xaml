@@ -5,67 +5,116 @@
              xmlns:model="clr-namespace:RUMMY_SCOREKEEPER.Model"
              x:DataType="viewmodel:CurrentGameViewModel"
              x:Class="RUMMY_SCOREKEEPER.Views.CurrentGamePage"
-             Title="Current Game"
+             Title=""
              >
     
     <VerticalStackLayout Spacing="50">
 
 
-        <Grid ColumnDefinitions="*"
+        <Grid ColumnDefinitions="*,*,*"
               RowDefinitions="*,*"
-              
               >
             <Label Grid.Column="0"
                    Grid.Row="0"
                    FontSize="25"
+                   TextDecorations="Underline"
                    FontAttributes="Bold"
                    HorizontalOptions="CenterAndExpand"
-                   Text="Total Score Remaining"
+                   Text="Leading Player"
                    />
+
             <Label Grid.Column="0"
                    Grid.Row="1"
                    FontSize="25"
                    FontAttributes="Bold"
                    HorizontalOptions="CenterAndExpand"
-                   Text="{Binding TotalScoreEntered}"
+                   Text="{Binding LeadPlayerName}"
+                   />
+            
+            
+            <Label Grid.Column="1"
+                   Grid.Row="0"
+                   TextDecorations="Underline"
+                   FontSize="25"
+                   FontAttributes="Bold"
+                   HorizontalOptions="CenterAndExpand"
+                   Text="Score Limit"
+                   />
+
+            <Label Grid.Column="1"
+                 Grid.Row="1"
+                 FontSize="25"
+                 FontAttributes="Bold"
+                 HorizontalOptions="CenterAndExpand"
+                 Text="{Binding TotalScoreEntered}"
+                 />
+
+
+
+            <Label Grid.Column="2"
+                   Grid.Row="0"
+                   FontSize="25"
+                   TextDecorations="Underline"
+                   FontAttributes="Bold"
+                   HorizontalOptions="CenterAndExpand"
+                   Text="Round"
+                   />
+
+            <Label Grid.Column="2"
+                   Grid.Row="1"
+                   FontSize="25"
+                   FontAttributes="Bold"
+                   HorizontalOptions="CenterAndExpand"
+                   Text="{Binding CurrentRound}"
                    />
         </Grid>
             <CollectionView ItemsSource="{Binding Players}" >
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:Player" >
-                        <Frame>
-                            <!--Make a swipe grid here to add and subtract numbers for player score-->
-                        <Grid ColumnDefinitions="*,*,*,*"
-                                  RowDefinitions="*"
+                <DataTemplate x:DataType="model:CurrentGame" >
+                    <Frame>
+                        <Grid ColumnDefinitions="*,*,*"
+                              RowDefinitions="*,*"
+                              ColumnSpacing="50"
                               >
                             <Label x:Name="PlayerName"
                                    Grid.Column="0" 
                                    Grid.Row="0"
+                                   FontSize="25"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
                                    Text="{Binding Name}"
                                    />
 
                             <Label Grid.Column="1" 
                                    Grid.Row="0"
+                                   FontSize="25"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
                                    Text="{Binding Score}"
                                    />
 
-                            <Button Grid.Column="2"
-                                    Grid.Row="0"
-                                    FontSize="25"
-                                    HeightRequest="40"
-                                    WidthRequest="40"
-                                    Text="-"
-                                    />
+                            <Entry 
+                                   Grid.Column="2"
+                                   Grid.Row="0"
+                                   FontSize="25"
+                                   ClassId="{Binding Name}" 
+                                   x:Name="EntryScore"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   WidthRequest="100"
+                                   MaxLength="3"
+                                   Text="0"
+                                   IsTextPredictionEnabled="False"
+                                   ClearButtonVisibility="Never"
+                                   Keyboard="Numeric"
+                                   ReturnCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CurrentGameViewModel}}, Path=ScoreEnteredCommand}"
+                                   ReturnCommandParameter="{x:Reference EntryScore}"       
+                                   Focused="EntryFocus"
+                                   Unfocused="EntryUnfocus"
+                                   >
 
-                            <Button Grid.Column="3"
-                                    Grid.Row="0"
-                                    FontSize="25"
-                                    HeightRequest="40"
-                                    WidthRequest="40"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CurrentGameViewModel}}, Path=AddScoreCommand}"
-                                    CommandParameter="{x:Reference Name=PlayerName}"
-                                    Text="+"
-                                    />
+                            </Entry>
+
                         </Grid>
                     </Frame>
                     </DataTemplate>
@@ -75,11 +124,43 @@
         
         
         <!--End game, no winner. Just cancel current game-->
-        <Button Text="End Game" 
-                Command="{Binding EndGameCommand}"
-                />
+
+        <Grid ColumnDefinitions="*,*,*"
+              RowDefinitions="*"
+              RowSpacing="100"
+              >
+            <Button Text="End Game"
+                    x:Name="EndGameButton"
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    WidthRequest="110"
+                    Command="{Binding EndGameCommand}"
+                    CommandParameter="{x:Reference Name=EndGameButton}"
+                    />
+
+
+            <Button Text="Submit Round"
+                    Grid.Column="2"
+                    Grid.Row="0"
+                    WidthRequest="110"
+                    IsEnabled="{Binding IsBusy}"
+                    Command="{Binding SubmitRoundCommand}"
+                    />
+
+
+            <Label Grid.Column="1"
+                   Grid.Row="0"
+                   FontSize="25"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   TextColor="Gray"
+                   Text="Use ( - ) if player went negative"
+                   
+                   />
+        </Grid>
         
-        
+
+
         <!--<CollectionView Grid.Column="1"
                             Grid.Row="0"
                             ItemsSource="{Binding Players}"

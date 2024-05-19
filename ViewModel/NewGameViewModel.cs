@@ -3,18 +3,20 @@ using System.Threading;
 
 namespace RUMMY_SCOREKEEPER.ViewModel;
 
-[QueryProperty(nameof(Players), nameof(Players))]
-[QueryProperty(nameof(TotalScoreEntered), nameof(TotalScoreEntered))]
 public partial class NewGameViewModel : ObservableObject
 {
 
     public NewGameViewModel()
     {
-
+       CurrentGame = new CurrentGame();
+       Players = new ObservableCollection<Player>();
     }
 
     [ObservableProperty]
-    int totalScoreEntered;
+    string totalScoreEntered;
+
+    [ObservableProperty]
+    int currentRound;
 
     [ObservableProperty]
     ObservableCollection<Player> players;
@@ -22,21 +24,69 @@ public partial class NewGameViewModel : ObservableObject
     [ObservableProperty]
     string text;
 
+    [ObservableProperty]
+    CurrentGame currentGame;
+
+
 
     [RelayCommand]
     async Task CancelBtn()
     {
-        await Shell.Current.GoToAsync("..");
+        await Shell.Current.GoToAsync("..", true);
+    }
+
+    [RelayCommand]
+    void AddPlayerBtn()
+    {
+        if (Players.Count == 6)
+        {
+            return;
+        }
+        var enteredName = Text;
+
+        if (string.IsNullOrWhiteSpace(enteredName))
+        {
+            return;
+        }
+
+        enteredName = enteredName.Trim();
+
+        var player = Players.FirstOrDefault(p => p.Name == enteredName);
+        if (player == null)
+        {
+            player = new Player();
+            player.Name = enteredName;
+            Players.Add(player);
+
+            Text = string.Empty;
+        }
+    }
+
+    [RelayCommand]
+    void DeletePlayerBtn(string name)
+    {
+        var player = Players.FirstOrDefault(p => p.Name == name);
+        if (player != null)
+        {
+            Players.Remove(player);
+        }
     }
 
     [RelayCommand]
     async Task StartGame(object sender)
     {
-        
-        var enteredScore = Text;
+
+        if (Players.Count < 2)
+        {
+            Shell.Current.CurrentPage.ShowPopup(new WarningPopupPage(new WarningPopupViewModel("Enter 2 - 6 players")));
+            return;
+        }
+
+        var enteredScore = TotalScoreEntered;
 
         if (string.IsNullOrWhiteSpace(enteredScore))
         {
+            Shell.Current.CurrentPage.ShowPopup(new WarningPopupPage(new WarningPopupViewModel("Please enter a valid score range.")));
             return;
         }
 
@@ -44,12 +94,14 @@ public partial class NewGameViewModel : ObservableObject
 
         if(Int32.TryParse(enteredScore, out var score) == false)
         {
-            Shell.Current.CurrentPage.ShowPopup(new PopupPage());
+            Shell.Current.CurrentPage.ShowPopup(new WarningPopupPage(new WarningPopupViewModel("Please enter a valid score range.")));
+            return;
         }
 
         if (score < 100 || score > 500)
         {
-            Shell.Current.CurrentPage.ShowPopup(new PopupPage());
+            Shell.Current.CurrentPage.ShowPopup(new WarningPopupPage(new WarningPopupViewModel("Please enter a valid score range.")));
+            return;
         }
         else
         {
@@ -60,12 +112,17 @@ public partial class NewGameViewModel : ObservableObject
                     entry.HideKeyboardAsync(CancellationToken.None);
                 }
             }
+            CurrentRound = 1;
+            CurrentGame.CurrentRound = CurrentRound;
+            CurrentGame.CurrentPlayers = Players.ToList();
 
-            await Shell.Current.GoToAsync(nameof(CurrentGamePage),
+            await Shell.Current.GoToAsync(nameof(CurrentGamePage),true,
                     new Dictionary<string, object>
                     {
                         ["Players"] = Players,
-                        ["TotalScoreEntered"] = enteredScore
+                        ["TotalScoreEntered"] = enteredScore,
+                        ["CurrentRound"] = CurrentRound,
+                        ["CurrentGame"] = CurrentGame
                     });
         }
 

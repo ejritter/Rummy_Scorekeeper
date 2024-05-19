@@ -57,21 +57,24 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.0" />
 		<PackageReference Include="CommunityToolkit.Maui.Markup" Version="4.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.20" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.21" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.20" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.21" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\PopupCalculatorPage.xaml.cs">
-	    <DependentUpon>PopupCalculatorPage.xaml</DependentUpon>
+	  <Compile Update="Views\WarningPopupPage.xaml.cs">
+	    <DependentUpon>WarningPopupPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\ConfirmPopupPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\CurrentGamePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -81,12 +84,14 @@
 	  <MauiXaml Update="Views\NewGamePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\PopupCalculatorPage.xaml">
+	  <MauiXaml Update="Views\WarningPopupPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\PopupPage.xaml">
+	  <MauiXaml Update="Views\WinningPopupPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadGenericExceptionInfoBarRUMMY_SCOREKEEPERHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>

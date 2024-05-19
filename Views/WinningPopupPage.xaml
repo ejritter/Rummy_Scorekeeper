@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mct:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+             xmlns:viewmodel="clr-namespace:RUMMY_SCOREKEEPER.ViewModel"
+             xmlns:model="clr-namespace:RUMMY_SCOREKEEPER.Model"
+             x:DataType="viewmodel:WinningPopupViewModel"
+             x:Class="RUMMY_SCOREKEEPER.Views.WinningPopupPage"
+             >
+    <VerticalStackLayout>
+        <Frame>
+            <Grid ColumnDefinitions="*,*"
+                  RowDefinitions="*,*"
+                  >
+                <Label Grid.Column="0"
+                       Grid.Row="0"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       TextDecorations="Underline"
+                       Text="Winners"
+                       FontSize="50"
+                       />
+
+                <CollectionView Grid.Column="0"
+                                Grid.Row="1"
+                                ItemsSource="{Binding Names}"
+                                >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+
+                            <Label Text="{Binding .}"
+                                   FontSize="25" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   />
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Label Grid.Column="1"
+                       Grid.Row="0"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       TextDecorations="Underline"
+                       Text="Total Rounds"
+                       FontSize="50"
+                       />
+
+                <Label Grid.Column="1"
+                       Grid.Row="1"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       Text="{Binding TotalRounds}"
+                       FontSize="25"
+                       />
+
+            </Grid>
+            
+        </Frame>
+    </VerticalStackLayout>
+</mct:Popup>
