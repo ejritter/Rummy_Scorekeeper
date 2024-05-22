@@ -6,6 +6,7 @@ global using RUMMY_SCOREKEEPER.Model;
 global using RUMMY_SCOREKEEPER.Views;
 global using RUMMY_SCOREKEEPER.ViewModel;
 global using System.Collections.ObjectModel;
+global using System.Collections;
 global using System.ComponentModel;
 global using System.Diagnostics;
 global using System.Runtime.CompilerServices;

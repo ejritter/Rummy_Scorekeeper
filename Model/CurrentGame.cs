@@ -10,6 +10,16 @@ public partial class CurrentGame : ObservableObject
     private int currentRound;
     private Player currentPlayer;
     public List<Player> CurrentPlayers;
+    private readonly Hashtable scoreLimitHashTable = 
+        new Hashtable { 
+                       {2, 385 },
+                       {3, 350 },
+                       {4, 315 },
+                       {5, 280 },
+                       {6, 245 }
+                     };
+
+    private int scoreLimit;
 
     public Player CurrentPlayer
     {
@@ -53,15 +63,10 @@ public partial class CurrentGame : ObservableObject
     }
 
 
-    //public string Name
-    //{
-    //    get => name = CurrentPlayer.Name;
-    //}
-    //public int Score
-    //{
-    //    get => score = CurrentPlayer.Score;
-
-    //}
+    public int ScoreLimit
+    {
+        get => scoreLimit = (int)scoreLimitHashTable[CurrentPlayers.Count];
+    }
 
 
     public string LeadPlayerName
@@ -87,11 +92,6 @@ public partial class CurrentGame : ObservableObject
     }
 
 
-
-    //Don't send this the observableobject
-    //make a new object. We will clear and re-add to this object each time.
-    //This should allow the viewmodel to remain stagnant and not dynamically update until
-    //user clicks submit round.
     public CurrentGame()
     {
 

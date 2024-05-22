@@ -25,6 +25,9 @@ public partial class NewGameViewModel : ObservableObject
     string text;
 
     [ObservableProperty]
+    Entry currentEntry;
+
+    [ObservableProperty]
     CurrentGame currentGame;
 
 
@@ -34,6 +37,7 @@ public partial class NewGameViewModel : ObservableObject
     {
         await Shell.Current.GoToAsync("..", true);
     }
+
 
     [RelayCommand]
     void AddPlayerBtn()
@@ -48,7 +52,6 @@ public partial class NewGameViewModel : ObservableObject
         {
             return;
         }
-
         enteredName = enteredName.Trim();
 
         var player = Players.FirstOrDefault(p => p.Name == enteredName);
@@ -59,6 +62,7 @@ public partial class NewGameViewModel : ObservableObject
             Players.Add(player);
 
             Text = string.Empty;
+            SetEntry(CurrentEntry);
         }
     }
 
@@ -105,11 +109,11 @@ public partial class NewGameViewModel : ObservableObject
         }
         else
         {
-            if (sender is Entry entry)
+            if (sender is Entry)
             {
-                if (entry.IsSoftKeyboardShowing() == true)
+                if (CurrentEntry.IsSoftKeyboardShowing() == true)
                 {
-                    entry.HideKeyboardAsync(CancellationToken.None);
+                    CurrentEntry.HideKeyboardAsync(CancellationToken.None);
                 }
             }
             CurrentRound = 1;
@@ -127,5 +131,16 @@ public partial class NewGameViewModel : ObservableObject
         }
 
 
+    }
+
+    public void SetEntry(Entry entry)
+    {
+        CurrentEntry = entry;
+        CurrentEntry.ShowKeyboardAsync();
+    }
+
+    public void ClearEntry()
+    {
+        CurrentEntry = null;
     }
 }
