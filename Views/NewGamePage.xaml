@@ -5,6 +5,7 @@
              xmlns:model="clr-namespace:RUMMY_SCOREKEEPER.Model"
              x:DataType="viewmodel:NewGameViewModel"
              x:Class="RUMMY_SCOREKEEPER.Views.NewGamePage"
+             Loaded="OnPageLoaded"
              Title="">
     <VerticalStackLayout Spacing="5" Margin="5">
         
@@ -44,6 +45,10 @@
                     HorizontalOptions="CenterAndExpand"
                     MaxLength="100"
                     Keyboard="Text"
+                    Focused="EntryFocus"
+                    Unfocused="EntryUnfocus"
+                    ReturnCommand="{Binding AddPlayerBtnCommand}"
+                    Completed="SetNameTextFocus"
                     />
 
             <Label x:Name="WinningScore"
@@ -64,8 +69,11 @@
                     HeightRequest="40"
                     MaxLength="3"
                     FontSize="20"
+                    Focused="EntryFocus"
+                    Unfocused="EntryUnfocus"
                     HorizontalOptions="CenterAndExpand"
                     Keyboard="Numeric"
+                    ReturnCommand="{Binding StartGameCommand}"
                     />
             
             <Button Grid.Column="0"

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Views;
+using System.Collections;
 using System.Runtime.InteropServices;
 
 namespace RUMMY_SCOREKEEPER.ViewModel;
@@ -94,6 +95,18 @@ public partial class CurrentGameViewModel : ObservableObject
     //    }
     //}
 
+
+    private void ScoreCheck(int enteredScore)
+    {
+        if (enteredScore > CurrentGame.ScoreLimit)
+        {
+
+            string message = $"With {CurrentGame.CurrentPlayers.Count} players,  entered score cannot exceed {CurrentGame.ScoreLimit}.";
+
+            Shell.Current.CurrentPage.ShowPopup(new WarningPopupPage(new WarningPopupViewModel(message)));
+            return;
+        }
+    }
     [RelayCommand]
     public void ScoreEntered(object sender)
     {
@@ -103,6 +116,7 @@ public partial class CurrentGameViewModel : ObservableObject
 
             //TODO
             //add check against submitted score and limit it.
+            ScoreCheck(EnteredScore);
             //Maybe make sure it cannot exceed the scorelimit of the match?
             //Not sure how to check that...
             var mp = modifiedPlayer.FirstOrDefault(mp => mp.Name == CurrentPlayer.Name);
@@ -248,6 +262,8 @@ public partial class CurrentGameViewModel : ObservableObject
 
     }
 
+
+
     public void ClearEntry()
     {
         var modified = modifiedPlayer.FirstOrDefault(mp => mp.Name == CurrentPlayer.Name);
@@ -262,8 +278,4 @@ public partial class CurrentGameViewModel : ObservableObject
         CurrentEntry.HideKeyboardAsync();
     }
 
-    public void SetResponse(bool response)
-    {
-        Response = response;
-    }
 }
