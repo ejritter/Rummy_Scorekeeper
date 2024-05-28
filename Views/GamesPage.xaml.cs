@@ -8,5 +8,4 @@ public partial class GamesPage : ContentPage
         InitializeComponent();
         BindingContext = vm;
 	}
-
 }

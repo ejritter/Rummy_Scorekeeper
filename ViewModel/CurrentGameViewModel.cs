@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
 using System.Collections;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace RUMMY_SCOREKEEPER.ViewModel;
 
@@ -8,6 +9,8 @@ namespace RUMMY_SCOREKEEPER.ViewModel;
 [QueryProperty(nameof(TotalScoreEntered), nameof(TotalScoreEntered))]
 [QueryProperty(nameof(CurrentRound), nameof(CurrentRound))]
 [QueryProperty(nameof(CurrentGame), nameof(CurrentGame))]
+[QueryProperty(nameof(GamesPath), nameof(GamesPath))]
+[QueryProperty(nameof(GameName), nameof(GameName))]
 public partial class CurrentGameViewModel : ObservableObject
 {
     private List<Player> modifiedPlayer = new List<Player>();
@@ -51,7 +54,11 @@ public partial class CurrentGameViewModel : ObservableObject
     [ObservableProperty]
     bool response;
 
+    [ObservableProperty]
+    string gamesPath;
 
+    [ObservableProperty]
+    string gameName;
 
     //[RelayCommand]
     //public void ScoreEntered(object sender)
@@ -187,10 +194,6 @@ public partial class CurrentGameViewModel : ObservableObject
         {
             entry.Text = "0";
         }
-       
-       //TODO
-       //assign the leading player here.
-       //
 
         if (CurrentRound > 1)
         {
@@ -200,13 +203,22 @@ public partial class CurrentGameViewModel : ObservableObject
             LeadPlayerName = leadPlayer.Name;                 
         }
 
-        //TODO
-        //save current game file for reloading later.
-
-
         Entries.Clear();
 
         IsBusy = false;
+
+        //TODO
+        //save current game file for reloading later.
+        SaveGame();
+
+    }
+
+    async Task SaveGame()
+    {
+        var gamePath = Path.Combine(GamesPath, GameName);
+
+        await using FileStream createStream = File.Create(gamePath);
+        await JsonSerializer.SerializeAsync(createStream, gamePath);
     }
 
     [RelayCommand]

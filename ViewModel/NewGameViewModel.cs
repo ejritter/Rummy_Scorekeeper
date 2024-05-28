@@ -3,6 +3,8 @@ using System.Threading;
 
 namespace RUMMY_SCOREKEEPER.ViewModel;
 
+[QueryProperty(nameof(GamesPath), nameof(GamesPath))]
+[QueryProperty(nameof(GameName), nameof(GameName))]
 public partial class NewGameViewModel : ObservableObject
 {
 
@@ -30,7 +32,11 @@ public partial class NewGameViewModel : ObservableObject
     [ObservableProperty]
     CurrentGame currentGame;
 
+    [ObservableProperty]
+    string gamesPath;
 
+    [ObservableProperty]
+    string gameName;
 
     [RelayCommand]
     async Task CancelBtn()
@@ -119,6 +125,8 @@ public partial class NewGameViewModel : ObservableObject
             CurrentRound = 1;
             CurrentGame.CurrentRound = CurrentRound;
             CurrentGame.CurrentPlayers = Players.ToList();
+            CurrentGame.TotalScoreEntered = score;
+            GameName = GameName.Replace("guid", CurrentGame.CurrentGameGuid.ToString());
 
             await Shell.Current.GoToAsync(nameof(CurrentGamePage),true,
                     new Dictionary<string, object>
@@ -126,7 +134,9 @@ public partial class NewGameViewModel : ObservableObject
                         ["Players"] = Players,
                         ["TotalScoreEntered"] = enteredScore,
                         ["CurrentRound"] = CurrentRound,
-                        ["CurrentGame"] = CurrentGame
+                        ["CurrentGame"] = CurrentGame,
+                        ["GamesPath"] = GamesPath,
+                        ["GameName"] = GameName
                     });
         }
 

@@ -5,6 +5,7 @@
              xmlns:model="clr-namespace:RUMMY_SCOREKEEPER.Model"
              x:DataType="viewmodel:CurrentGameViewModel"
              x:Class="RUMMY_SCOREKEEPER.Views.CurrentGamePage"
+             Loaded="CurrentGameLoaded"
              Title=""
              >
     

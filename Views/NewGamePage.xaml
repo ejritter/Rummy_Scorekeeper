@@ -60,8 +60,8 @@
                    HorizontalOptions="CenterAndExpand"
                    />
 
-            <Entry  x:Name="Score"
-                    ClassId="Score"
+            <Entry  x:Name="TotalScoreEntered"
+                    ClassId="TotalScoreEntered"
                     Grid.Column="1"
                     Grid.Row="1"
                     Text="{Binding TotalScoreEntered}"

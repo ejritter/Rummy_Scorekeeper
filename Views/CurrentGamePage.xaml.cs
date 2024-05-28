@@ -31,4 +31,10 @@ public partial class CurrentGamePage : ContentPage
         }
     }
 
+	public void CurrentGameLoaded(object sender, EventArgs e)
+    {
+		var a = sender;
+		var b = e;
+	}
+
 }

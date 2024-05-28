@@ -10,26 +10,81 @@
 
 
     <VerticalStackLayout Spacing="10" Margin="5">
-        <Grid x:Name="PlayerGrid"
-              ColumnDefinitions="100,*" 
+        <Grid ColumnDefinitions="*,*" 
               ColumnSpacing="4" 
-              RowDefinitions="Auto, 100,*, *"
-              RowSpacing="4"
+              RowDefinitions="*,*,*"
+              RowSpacing="10"
               >
 
 
-            <Button Text="Start a new game!"
+            <Button Text="Start a new game"
                     Grid.ColumnSpan="2"
-                    Grid.Row="3" 
+                    Grid.Row="0" 
                     >
                 <Button.GestureRecognizers>
                     <TapGestureRecognizer
                             Command="{Binding StartNewGameCommand}"
                             />
                 </Button.GestureRecognizers>
-
             </Button>
 
+            <CollectionView Grid.ColumnSpan="2"
+                 Grid.Row="1"
+                 x:Name="CurrentGamesCollections"
+                 ItemsSource="{Binding CurrentGames}"
+                 SelectionMode="Single"
+                 SelectionChangedCommand="{Binding SelectedGameCommand}"
+                 SelectionChangedCommandParameter="{x:Reference CurrentGamesCollections}"           
+                 EmptyView="Currently no games active"
+                 >
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" 
+                                       ItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:CurrentGame">
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Delete"
+                                    BackgroundColor="Red"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:GamesViewModel}}, Path=DeleteGameCommand}"
+                                    CommandParameter="{Binding CurrentGameGuid}"
+                                    />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Delete"
+                                    BackgroundColor="Red"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:GamesViewModel}}, Path=DeleteGameCommand}"
+                                    CommandParameter="{Binding CurrentGameGuid}"
+                                    />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Frame>
+                                <Label Text="Add Player Names from Game"
+                                        FontSize="24"
+                                        />
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+            
+            <Button Text="Continue Game"
+                    x:Name="ContinueGameBtn"
+                    IsEnabled="{Binding IsEnabled}"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="3" 
+                    >
+                <Button.GestureRecognizers>
+                    <TapGestureRecognizer
+                            Command="{Binding ContinueGameCommand}"
+                            />
+                </Button.GestureRecognizers>
+            </Button>
         </Grid>
         <!--<Grid x:Name="PlayerGrid"
               RowDefinitions="Auto, 100,*, *"

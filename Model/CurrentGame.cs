@@ -1,12 +1,16 @@
 ﻿
+
 namespace RUMMY_SCOREKEEPER.Model;
 
 public partial class CurrentGame : ObservableObject
 {
+    private Guid currentGameGuid;
+    private bool isActive;
     private Player leadPlayer;
     private string leadPlayerName;
     private string name;
     private int score;
+    private int totalScoreEntered;
     private int currentRound;
     private Player currentPlayer;
     public List<Player> CurrentPlayers;
@@ -21,6 +25,24 @@ public partial class CurrentGame : ObservableObject
 
     private int scoreLimit;
 
+    public bool IsActive
+    {
+        get => isActive = true;
+        set
+        {
+            if (isActive = value) return;
+            isActive = false;
+        }
+    }
+    public Guid CurrentGameGuid
+    {
+        get => currentGameGuid = Guid.NewGuid();
+        set
+        {
+            if (value == currentGameGuid) return;
+            currentGameGuid = value;
+        }
+    }
     public Player CurrentPlayer
     {
         get => currentPlayer;
@@ -62,6 +84,15 @@ public partial class CurrentGame : ObservableObject
         }
     }
 
+    public int TotalScoreEntered
+    {
+        get => totalScoreEntered;
+        set
+        {
+            if (totalScoreEntered == value) return;
+            totalScoreEntered = value;
+        }
+    }
 
     public int ScoreLimit
     {
@@ -96,5 +127,11 @@ public partial class CurrentGame : ObservableObject
     {
 
     }
+
+}
+
+[JsonSerializable(typeof(List<Player>))]
+internal sealed partial class CurrentGameContext : JsonSerializerContext
+{
 
 }
