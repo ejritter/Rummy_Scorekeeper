@@ -6,24 +6,23 @@ public partial class CurrentGame : ObservableObject
 {
     private Guid currentGameGuid;
     private bool isActive;
-    private Player leadPlayer;
-    private string leadPlayerName;
-    private string name;
-    private int score;
     private int totalScoreEntered;
     private int currentRound;
     private Player currentPlayer;
     public List<Player> CurrentPlayers;
-    private readonly Hashtable scoreLimitHashTable = 
-        new Hashtable { 
-                       {2, 385 },
-                       {3, 350 },
-                       {4, 315 },
-                       {5, 280 },
-                       {6, 245 }
-                     };
-
+    private string winningPlayer;
     private int scoreLimit;
+
+    public string WinningPlayer
+    {
+        get => winningPlayer;
+        set
+        {
+            if (value == winningPlayer)
+                return;
+            winningPlayer = value;
+        }
+    }
 
     public bool IsActive
     {
@@ -43,46 +42,6 @@ public partial class CurrentGame : ObservableObject
             currentGameGuid = value;
         }
     }
-    public Player CurrentPlayer
-    {
-        get => currentPlayer;
-        set
-        {
-            if (currentPlayer == value) return;
-            currentPlayer = CurrentPlayers.FirstOrDefault(cp => cp == value);
-            OnPropertyChanged();
-        }
-    }
-
-    public Player LeadPlayer
-    {
-        get => leadPlayer;
-        set
-        {
-            if (leadPlayer == value) return; 
-            leadPlayer = (Player)CurrentPlayers.OrderByDescending(c => c.Score);
-            OnPropertyChanged();
-        }
-    }
-    public string Name
-    {
-        get => name;
-        set
-        {
-            if (name == value) return;
-            name = CurrentPlayer.Name;
-        }
-    }
-
-    public int Score
-    {
-        get => score;
-        set
-        {
-            if (score == value) return;
-            score = CurrentPlayer.Score;
-        }
-    }
 
     public int TotalScoreEntered
     {
@@ -91,23 +50,6 @@ public partial class CurrentGame : ObservableObject
         {
             if (totalScoreEntered == value) return;
             totalScoreEntered = value;
-        }
-    }
-
-    public int ScoreLimit
-    {
-        get => scoreLimit = (int)scoreLimitHashTable[CurrentPlayers.Count];
-    }
-
-
-    public string LeadPlayerName
-    {
-        get => leadPlayerName;
-        set
-        {                                  
-            if(leadPlayerName == value) return;
-            leadPlayerName = LeadPlayer.Name;
-            OnPropertyChanged();
         }
     }
 

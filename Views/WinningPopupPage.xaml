@@ -10,7 +10,7 @@
     <VerticalStackLayout>
         <Frame>
             <Grid ColumnDefinitions="*,*"
-                  RowDefinitions="*,*"
+                  RowDefinitions="*,*,*"
                   >
                 <Label Grid.Column="0"
                        Grid.Row="0"
@@ -27,7 +27,6 @@
                                 >
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="x:String">
-
                             <Label Text="{Binding .}"
                                    FontSize="25" 
                                    HorizontalTextAlignment="Center"
@@ -54,6 +53,24 @@
                        Text="{Binding TotalRounds}"
                        FontSize="25"
                        />
+
+                <CollectionView Grid.Column="0"
+                                Grid.Row="2"
+                                ItemsSource="{Binding Names}"
+                                IsEnabled="False"
+                                >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+
+                            <Label Text="Replace me with tiebreakers"
+                                   FontSize="25" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   />
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
             </Grid>
             

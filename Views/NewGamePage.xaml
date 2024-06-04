@@ -81,7 +81,7 @@
                     HeightRequest="40"
                     HorizontalOptions="End"
                     Command="{Binding StartGameCommand}"
-                    CommandParameter="{x:Reference Name=Score}"
+                    CommandParameter="{x:Reference Name=TotalScoreEntered}"
                     Text="Start"
                 />
 

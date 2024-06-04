@@ -12,6 +12,5 @@ public partial class WinningPopupViewModel : ObservableObject
         WinningPlayers = winningPlayers;
         Names = WinningPlayers.Select(x => x.Name).ToList(); 
         TotalRounds = rounds;
-        
     }
 }

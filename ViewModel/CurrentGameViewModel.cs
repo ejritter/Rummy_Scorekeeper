@@ -14,8 +14,27 @@ namespace RUMMY_SCOREKEEPER.ViewModel;
 public partial class CurrentGameViewModel : ObservableObject
 {
     private List<Player> modifiedPlayer = new List<Player>();
+    private List<Player> tiePlayers = new List<Player>();
+
     private List<Player> winningPlayers = new List<Player>();
     private List<Entry> Entries = new List<Entry>();
+    private readonly Dictionary<int, int> dictScoreLimit =
+     new Dictionary<int, int>
+     {
+         [2] = 385,
+         [3] = 350,
+         [4] = 315,
+         [5] = 280,
+         [6] = 245
+
+     };
+
+    private int scoreLimit;
+    
+    public int ScoreLimit
+    {
+        get => dictScoreLimit[CurrentGame.CurrentPlayers.Count];
+    }
 
     public CurrentGameViewModel()
     {
@@ -30,7 +49,7 @@ public partial class CurrentGameViewModel : ObservableObject
     int totalScoreEntered;
     
     [ObservableProperty]
-    int currentRound;
+    private int currentRound;
 
     [ObservableProperty]
     ObservableCollection<Player> players;
@@ -60,55 +79,14 @@ public partial class CurrentGameViewModel : ObservableObject
     [ObservableProperty]
     string gameName;
 
-    //[RelayCommand]
-    //public void ScoreEntered(object sender)
-    //{
-    //    if (sender is Label label)
-    //    {
-    //        var player = Players.FirstOrDefault(p => p.Name == label.Text);
-    //        if (player != null)
-    //        {
-
-    //            var mp = modifiedPlayer.FirstOrDefault( mp => mp.Name == player.Name); 
-    //            //add player here with the modified/entered score from user input. 
-    //            if (mp != null )
-    //            {
-    //                mp.Score = EnteredScore;
-    //            }
-    //            else
-    //            {
-    //                mp = new Player
-    //                {
-    //                    Name = player.Name,
-    //                    Score = EnteredScore
-    //                };
-    //                modifiedPlayer.Add(mp);
-    //            }
-    //        }
-
-    //        if (modifiedPlayer.Count == Players.Count)
-    //        {
-    //            if (IsBusy == true)
-    //            {
-    //                IsBusy = false;
-    //            }
-    //            else
-    //            {
-    //                IsBusy = true;
-    //            }
-    //        }
-
-    //        CurrentEntry.HideKeyboardAsync();
-    //    }
-    //}
 
 
     private void ScoreCheck(int enteredScore)
     {
-        if (enteredScore > CurrentGame.ScoreLimit)
+        if (enteredScore > ScoreLimit)
         {
 
-            string message = $"With {CurrentGame.CurrentPlayers.Count} players,  entered score cannot exceed {CurrentGame.ScoreLimit}.";
+            string message = $"With {CurrentGame.CurrentPlayers.Count} players,  entered score cannot exceed {ScoreLimit}.";
 
             Shell.Current.CurrentPage.ShowPopup(new WarningPopupPage(new WarningPopupViewModel(message)));
             return;
@@ -121,11 +99,9 @@ public partial class CurrentGameViewModel : ObservableObject
         if (Int32.TryParse(CurrentEntry.Text, out int EnteredScore))
         {
 
-            //TODO
-            //add check against submitted score and limit it.
+            //check against submitted score and limit it.
             ScoreCheck(EnteredScore);
-            //Maybe make sure it cannot exceed the scorelimit of the match?
-            //Not sure how to check that...
+
             var mp = modifiedPlayer.FirstOrDefault(mp => mp.Name == CurrentPlayer.Name);
             //add player here with the modified/entered score from user input. 
             if (mp != null)
@@ -179,15 +155,44 @@ public partial class CurrentGameViewModel : ObservableObject
         winningPlayers = Players.Where(players => players.Score >= TotalScoreEntered)
                                  .ToList();
 
+        //TODO ADD a button asking to pick
+        //a winner if multiple winners reach 500
         if (winningPlayers != null && winningPlayers.Count > 0)
         {
+            CurrentGame.IsActive = false;
+            if (winningPlayers.Count > 1)
+            {
+                foreach (Player comparePlayer in winningPlayers)
+                {
+                    var currentScore = comparePlayer.Score;
+                    var winningPlayer = comparePlayer.Name;
+
+                    foreach (Player player in winningPlayers)
+                    {
+                        if (player.Name != winningPlayer && player.Score == currentScore)
+                        {
+                            //Player has the same score as our current player check.
+                            //add it to tiebreaker list.
+                            tiePlayers.Add(player);
+                        }
+                    }
+                }
+                if (tiePlayers.Count > 0)
+                {
+                    winningPlayers = null;
+                    winningPlayers = tiePlayers;
+                }
+            }
             Shell.Current.CurrentPage.ShowPopup(new WinningPopupPage(new WinningPopupViewModel(winningPlayers, CurrentRound)));
             EndGame(null);
             return;
         }
+
+
         //if no winner, proceed to next round
         CurrentGame.CurrentPlayers = Players.ToList();
         CurrentRound++;
+        CurrentGame.CurrentRound = CurrentRound;
         modifiedPlayer.Clear();
 
         foreach (Entry entry in Entries)
@@ -195,22 +200,32 @@ public partial class CurrentGameViewModel : ObservableObject
             entry.Text = "0";
         }
 
-        if (CurrentRound > 1)
-        {
-            var leadPlayer = Players.Where(p => p.Score >= 0)
-                                    .OrderByDescending(p => p.Score)
-                                    .FirstOrDefault(p => p.Name == p.Name);
-            LeadPlayerName = leadPlayer.Name;                 
-        }
 
         Entries.Clear();
-
+        //assign lead player
+        UpdateLeadPlayer();
         IsBusy = false;
 
         //TODO
         //save current game file for reloading later.
         SaveGame();
 
+    }
+
+    public void UpdateLeadPlayer()
+    {
+        if (CurrentGame != null) 
+        {
+            var leadPlayer = CurrentGame.CurrentPlayers.OrderByDescending(x => x.Score).FirstOrDefault();
+            if (leadPlayer != null && leadPlayer.Score != 0)
+            {
+                LeadPlayerName = leadPlayer.Name;
+            }
+            else
+            {
+                LeadPlayerName = string.Empty;
+            }
+        }
     }
 
     async Task SaveGame()
@@ -224,7 +239,7 @@ public partial class CurrentGameViewModel : ObservableObject
     [RelayCommand]
     async void EndGame(object? sender)
     {
-        //TODO add confirmation
+        //TODO add confirmation 
         if (sender is Button button)
         {
             var Response = await Shell.Current.CurrentPage.ShowPopupAsync(new ConfirmPopupPage(new ConfirmPopupViewModel()));
@@ -232,7 +247,14 @@ public partial class CurrentGameViewModel : ObservableObject
             {
                 if (boolResult == false)
                 {
+                    //holdem
                     return;
+                }
+                else
+                {
+                    //foldem
+                    CurrentGame.IsActive = false;
+                    CurrentGame.WinningPlayer = string.Empty;
                 }
             }
         }
@@ -242,9 +264,7 @@ public partial class CurrentGameViewModel : ObservableObject
         //Location = {//GamesPage/NewGamePage/CurrentGamePage}
         Players.Clear();
         Shell.Current.GoToAsync("//" + nameof(GamesPage),true);
-
     }
-
 
     public void UpdateEnteredScore(int score)
     {

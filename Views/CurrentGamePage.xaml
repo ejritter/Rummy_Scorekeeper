@@ -71,7 +71,7 @@
         </Grid>
             <CollectionView ItemsSource="{Binding Players}" >
                 <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:CurrentGame" >
+                <DataTemplate x:DataType="model:Player" >
                     <Frame>
                         <Grid ColumnDefinitions="*,*,*"
                               RowDefinitions="*,*"

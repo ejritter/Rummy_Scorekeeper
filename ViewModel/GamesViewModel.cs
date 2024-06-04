@@ -37,7 +37,7 @@ public partial class GamesViewModel : ObservableObject
         LoadDevData();
         var gameFiles2 = Directory.GetFiles(GamesPath);
 
-        //var gameFiles = Directory.GetFiles(GamesPath, "*_gameFile.json", );
+        var gameFiles = Directory.GetFiles(GamesPath, "*_gameFile.json");
         if (gameFiles != null &&  gameFiles.Length > 0 )
         {
             LoadGameData(gameFiles);
@@ -68,14 +68,14 @@ public partial class GamesViewModel : ObservableObject
         monkeyList = JsonSerializer.Deserialize(contents, CurrentGameContext.Default.ListPlayer);
         "{guid}_gameFile.json";
         */
-        foreach (var gameFile in gameFiles)
-        {
-            //using var stream = await FileSystem.OpenAppPackageFileAsync("guid_gameFile.json");
-            //using var reader = new StreamReader(stream);
-            //var contents = await reader.ReadToEndAsync();
-            //var players = JsonSerializer.Deserialize(contents, CurrentGameContext.Default.ListPlayer);
-           await ReadTextFile(gameFile);
-        }
+        //foreach (var gameFile in gameFiles)
+        //{
+        //    //using var stream = await FileSystem.OpenAppPackageFileAsync("guid_gameFile.json");
+        //    //using var reader = new StreamReader(stream);
+        //    //var contents = await reader.ReadToEndAsync();
+        //    //var players = JsonSerializer.Deserialize(contents, CurrentGameContext.Default.ListPlayer);
+        //   await ReadTextFile(gameFile);
+        //}
     }
     private void LoadDevData() 
     {
