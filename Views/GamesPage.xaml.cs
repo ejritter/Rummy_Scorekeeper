@@ -8,4 +8,9 @@ public partial class GamesPage : ContentPage
         InitializeComponent();
         BindingContext = vm;
 	}
+
+    private void ItemTapped(object sender, TappedEventArgs args)
+    {
+
+    }
 }

@@ -9,7 +9,9 @@ public partial class CurrentGame : ObservableObject
     private int totalScoreEntered;
     private int currentRound;
     private Player currentPlayer;
-    public List<Player> CurrentPlayers;
+    
+    [ObservableProperty]
+    public List<Player> currentPlayers;
     private string winningPlayer;
     private int scoreLimit;
 

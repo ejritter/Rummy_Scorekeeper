@@ -5,42 +5,72 @@
              xmlns:model="clr-namespace:RUMMY_SCOREKEEPER.Model"
              x:DataType="viewmodel:GamesViewModel"
              x:Class="RUMMY_SCOREKEEPER.Views.GamesPage"
-             Title=""
-             >
 
+             >
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="*"
+              RowDefinitions="*"
+              ColumnSpacing="2"
+              RowSpacing="2"
+              VerticalOptions="Center"
+              HorizontalOptions="Center"
+              >
+            <Label Text="RUMMY SCOREKEEPER"
+                   FontSize="Title"
+                   FontFamily="PlaywriteDEGrund-Regular"
+                   >
+          
+            </Label>
+        </Grid>
+    </Shell.TitleView>
 
     <VerticalStackLayout Spacing="10" Margin="5">
-        <Grid ColumnDefinitions="*,*" 
-              ColumnSpacing="4" 
+
+        <Line 
+        X1="0"
+        X2="100"
+        Stroke="#512BD4"
+        StrokeLineCap="Round"
+        StrokeThickness="12"
+        Aspect="Fill"                  
+        />
+
+        <Grid ColumnDefinitions="Auto,*" 
+              ColumnSpacing="2" 
               RowDefinitions="*,*,*"
               RowSpacing="10"
               >
 
 
-            <Button Text="Start a new game"
+            <Button Text="New Game"
                     Grid.ColumnSpan="2"
                     Grid.Row="0" 
-                    >
-                <Button.GestureRecognizers>
-                    <TapGestureRecognizer
-                            Command="{Binding StartNewGameCommand}"
-                            />
-                </Button.GestureRecognizers>
-            </Button>
+                    HorizontalOptions="CenterAndExpand"
+                    WidthRequest="250"
+                    Command="{Binding StartNewGameCommand}"
+                    />
+            
 
-            <CollectionView Grid.ColumnSpan="2"
-                 Grid.Row="1"
-                 x:Name="CurrentGamesCollections"
-                 ItemsSource="{Binding CurrentGames}"
-                 SelectionMode="Single"
-                 SelectionChangedCommand="{Binding SelectedGameCommand}"
-                 SelectionChangedCommandParameter="{x:Reference CurrentGamesCollections}"           
-                 EmptyView="Currently no games active"
-                 >
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" 
-                                       ItemSpacing="10"/>
-                </CollectionView.ItemsLayout>
+            
+            <CollectionView Grid.Column="1"
+                            Grid.Row="1"
+                            HorizontalOptions="Start"
+                            ItemsLayout="HorizontalGrid"
+                            x:Name="CurrentGamesCollections"
+                            ItemsSource="{Binding CurrentGames}"
+                            WidthRequest="5000"
+                            SelectionMode="Single"
+                            SelectionChangedCommand="{Binding SelectedGameCommand}"
+                            SelectionChangedCommandParameter="{x:Reference CurrentGamesCollections}"
+                            EmptyView="Currently no games active"
+                            >
+                <!--<CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Horizontal"
+                                     HorizontalItemSpacing="4"
+                                     Span="2"
+                                     />
+                </CollectionView.ItemsLayout>-->
+
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:CurrentGame">
                         <SwipeView>
@@ -62,22 +92,44 @@
                                     />
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            <Frame>
-                                <Label Text="Add Player Names from Game"
-                                        FontSize="24"
-                                        />
-                            </Frame>
+                            <Border Padding="15"
+                                    StrokeShape="RoundRectangle 8,8,8,8"
+                                    
+                                    >
+                                <!--<Label Text="Eric" />-->
+                                    <CollectionView ItemsSource="{Binding CurrentPlayers}" 
+                                                >
+                                        <CollectionView.ItemsLayout>
+                                            <GridItemsLayout Orientation="Horizontal"
+                                                         HorizontalItemSpacing="3"
+                                                         Span="2"/>
+                                        </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Player">
+
+                                            <Label Text="{Binding Name}"
+                                                   FontSize="Large"
+                                                   BackgroundColor="Red"
+                                                   >
+                                            </Label>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </Border>
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            
-            
-            <Button Text="Continue Game"
+
+
+            <Button Grid.Column="2"
+                    Grid.Row="1"
+                    HorizontalOptions="End"
+                    Text="Continue Game"
                     x:Name="ContinueGameBtn"
+                    
                     IsEnabled="{Binding IsEnabled}"
-                    Grid.ColumnSpan="2"
-                    Grid.Row="3" 
+ 
                     >
                 <Button.GestureRecognizers>
                     <TapGestureRecognizer
