@@ -22,7 +22,11 @@ namespace RUMMY_SCOREKEEPER
     		builder.Logging.AddDebug();
 #endif
             builder.UseMauiApp<App>().UseMauiCommunityToolkitMarkup();
-            
+
+            builder.AddAudio();
+
+            builder.Services.AddSingleton<IAudioService, AudioService>();
+
             builder.Services.AddSingleton<GamesPage>();
             builder.Services.AddSingleton<GamesViewModel>();
             

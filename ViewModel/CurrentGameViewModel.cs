@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Views;
 using System.Collections;
+using System.Data;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 
@@ -26,7 +27,6 @@ public partial class CurrentGameViewModel : ObservableObject
          [4] = 315,
          [5] = 280,
          [6] = 245
-
      };
 
     private int scoreLimit;
@@ -78,8 +78,6 @@ public partial class CurrentGameViewModel : ObservableObject
 
     [ObservableProperty]
     string gameName;
-
-
 
     private void ScoreCheck(int enteredScore)
     {
@@ -154,6 +152,8 @@ public partial class CurrentGameViewModel : ObservableObject
         CurrentGame.CurrentPlayers.Clear();
         winningPlayers = Players.Where(players => players.Score >= TotalScoreEntered)
                                  .ToList();
+
+
 
         //TODO ADD a button asking to pick
         //a winner if multiple winners reach 500

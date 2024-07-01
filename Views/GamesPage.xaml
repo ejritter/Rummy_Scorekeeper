@@ -40,8 +40,6 @@
               RowDefinitions="*,*,*"
               RowSpacing="10"
               >
-
-
             <Button Text="New Game"
                     Grid.ColumnSpan="2"
                     Grid.Row="0" 
@@ -94,7 +92,6 @@
                             </SwipeView.RightItems>
                             <Border Padding="15"
                                     StrokeShape="RoundRectangle 8,8,8,8"
-                                    
                                     >
                                 <!--<Label Text="Eric" />-->
                                     <CollectionView ItemsSource="{Binding CurrentPlayers}" 
@@ -123,13 +120,11 @@
 
 
             <Button Grid.Column="2"
-                    Grid.Row="1"
-                    HorizontalOptions="End"
+                    Grid.Row="2"
+                    HorizontalOptions="Center"
                     Text="Continue Game"
                     x:Name="ContinueGameBtn"
-                    
                     IsEnabled="{Binding IsEnabled}"
- 
                     >
                 <Button.GestureRecognizers>
                     <TapGestureRecognizer

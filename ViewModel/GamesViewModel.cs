@@ -1,9 +1,11 @@
-﻿namespace RUMMY_SCOREKEEPER.ViewModel;
+﻿using Plugin.Maui.Audio;
+
+namespace RUMMY_SCOREKEEPER.ViewModel;
 
 public partial class GamesViewModel : ObservableObject
 {
-    
-    public GamesViewModel()
+    public IAudioService playerService;
+    public GamesViewModel(IAudioService playerService)
     {
         Players = new ObservableCollection<Player>();
         CurrentGames = new ObservableCollection<CurrentGame>();
@@ -11,6 +13,9 @@ public partial class GamesViewModel : ObservableObject
         GameName = "guid_gameFile.json";
         LoadGameFiles();
         IsEnabled = false;
+        this.playerService = playerService;
+
+
     }
 
     [ObservableProperty]
@@ -30,7 +35,9 @@ public partial class GamesViewModel : ObservableObject
 
     [ObservableProperty]
     bool isEnabled;
-    
+
+
+
     private void LoadGameFiles()
     {
 
@@ -42,6 +49,7 @@ public partial class GamesViewModel : ObservableObject
         {
             LoadGameData(gameFiles);
         }
+        playerService.Start();
         
 
     }
@@ -79,6 +87,12 @@ public partial class GamesViewModel : ObservableObject
     }
     private void LoadDevData() 
     {
+
+
+
+
+
+
         CurrentGame game1 = new CurrentGame();
         CurrentGame game2 = new CurrentGame();
         CurrentGame game3 = new CurrentGame();
