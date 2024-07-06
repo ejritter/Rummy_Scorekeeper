@@ -39,6 +39,7 @@ public partial class CurrentGameViewModel : ObservableObject
     public CurrentGameViewModel()
     {
         IsBusy = false;
+        SaveGame();
 
     }
 
@@ -228,7 +229,7 @@ public partial class CurrentGameViewModel : ObservableObject
         }
     }
 
-    async Task SaveGame()
+    public async Task SaveGame()
     {
         var gamePath = Path.Combine(GamesPath, GameName);
 

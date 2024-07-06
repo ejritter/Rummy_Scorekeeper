@@ -29,7 +29,7 @@
         <Line 
         X1="0"
         X2="100"
-        Stroke="#512BD4"
+        Stroke="#9A5669"
         StrokeLineCap="Round"
         StrokeThickness="12"
         Aspect="Fill"                  
@@ -48,27 +48,17 @@
                     Command="{Binding StartNewGameCommand}"
                     />
             
-
-            
             <CollectionView Grid.Column="1"
                             Grid.Row="1"
                             HorizontalOptions="Start"
-                            ItemsLayout="HorizontalGrid"
+                            ItemsLayout="HorizontalGrid, 2"
                             x:Name="CurrentGamesCollections"
                             ItemsSource="{Binding CurrentGames}"
-                            WidthRequest="5000"
                             SelectionMode="Single"
                             SelectionChangedCommand="{Binding SelectedGameCommand}"
                             SelectionChangedCommandParameter="{x:Reference CurrentGamesCollections}"
                             EmptyView="Currently no games active"
                             >
-                <!--<CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Horizontal"
-                                     HorizontalItemSpacing="4"
-                                     Span="2"
-                                     />
-                </CollectionView.ItemsLayout>-->
-
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:CurrentGame">
                         <SwipeView>
@@ -125,6 +115,7 @@
                     Text="Continue Game"
                     x:Name="ContinueGameBtn"
                     IsEnabled="{Binding IsEnabled}"
+                    IsVisible="{Binding IsEnabled}"
                     >
                 <Button.GestureRecognizers>
                     <TapGestureRecognizer

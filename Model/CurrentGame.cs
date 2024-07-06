@@ -8,12 +8,9 @@ public partial class CurrentGame : ObservableObject
     private bool isActive;
     private int totalScoreEntered;
     private int currentRound;
-    private Player currentPlayer;
-    
-    [ObservableProperty]
-    public List<Player> currentPlayers;
+    public List<Player> CurrentPlayers = new();
     private string winningPlayer;
-    private int scoreLimit;
+
 
     public string WinningPlayer
     {
@@ -74,7 +71,7 @@ public partial class CurrentGame : ObservableObject
 
 }
 
-[JsonSerializable(typeof(List<Player>))]
+[JsonSerializable(typeof(CurrentGame))]
 internal sealed partial class CurrentGameContext : JsonSerializerContext
 {
 

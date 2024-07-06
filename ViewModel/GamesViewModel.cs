@@ -1,20 +1,18 @@
-﻿using Plugin.Maui.Audio;
-
-namespace RUMMY_SCOREKEEPER.ViewModel;
+﻿namespace RUMMY_SCOREKEEPER.ViewModel;
 
 public partial class GamesViewModel : ObservableObject
 {
     public IAudioService playerService;
+
     public GamesViewModel(IAudioService playerService)
     {
         Players = new ObservableCollection<Player>();
         CurrentGames = new ObservableCollection<CurrentGame>();
         GamesPath = FileSystem.Current.AppDataDirectory;
         GameName = "guid_gameFile.json";
-        LoadGameFiles();
         IsEnabled = false;
         this.playerService = playerService;
-
+        //LoadGameFiles();
 
     }
 
@@ -38,60 +36,43 @@ public partial class GamesViewModel : ObservableObject
 
 
 
-    private void LoadGameFiles()
+    private async void LoadGameFiles()
     {
 
-        LoadDevData();
-        var gameFiles2 = Directory.GetFiles(GamesPath);
+        //LoadDevData();
+        //var gameFiles2 = Directory.GetFiles(GamesPath);
 
-        var gameFiles = Directory.GetFiles(GamesPath, "*_gameFile.json");
-        if (gameFiles != null &&  gameFiles.Length > 0 )
+        GamesPath = Path.Combine(GamesPath, "SavedGames");
+        if (Directory.Exists(GamesPath) == false)
         {
-            LoadGameData(gameFiles);
+            Directory.CreateDirectory(GamesPath);
+            return;
         }
-        playerService.Start();
-        
 
+        var gameFiles = Directory.EnumerateFiles(GamesPath, "*_gameFile.json").ToList();
+        LoadGameData(gameFiles);
+        //playerService.Play();
     }
 
 
-    public static async Task<string> ReadTextFile(string filePath)
-    {
-        using Stream fileStream = FileSystem.Current.OpenAppPackageFileAsync(filePath).Result;
-        using StreamReader reader = new StreamReader(fileStream);
-        return await Task.FromResult(reader.ReadToEndAsync().Result);
 
-    }
     private async void LoadGameData(IEnumerable<string> gameFiles)
     {
+        var tasks = gameFiles.Select(async gameFile =>
+        {
+            string jsonString = await File.ReadAllTextAsync(gameFile);
+            var currentGame = JsonSerializer.Deserialize<CurrentGame>(jsonString);
+            return currentGame;
+        });
 
-        
-        //How to read a json file
-        /*
-        var gamePath = Path.Combine(GamesPath, GameName);
-        using var stream = await FileSystem.OpenAppPackageFileAsync("monkeydata.json");
-        using var reader = new StreamReader(stream);
-        var contents = await reader.ReadToEndAsync();
-        /data/user/0/com.companyname.rummy_scorekeeper/files/guid_gameFile.json
-        monkeyList = JsonSerializer.Deserialize(contents, CurrentGameContext.Default.ListPlayer);
-        "{guid}_gameFile.json";
-        */
-        //foreach (var gameFile in gameFiles)
-        //{
-        //    //using var stream = await FileSystem.OpenAppPackageFileAsync("guid_gameFile.json");
-        //    //using var reader = new StreamReader(stream);
-        //    //var contents = await reader.ReadToEndAsync();
-        //    //var players = JsonSerializer.Deserialize(contents, CurrentGameContext.Default.ListPlayer);
-        //   await ReadTextFile(gameFile);
-        //}
+        var deserializedGames = await Task.WhenAll(tasks);
+        foreach (var game in deserializedGames)
+        {
+            CurrentGames.Add(game);
+        }
     }
     private void LoadDevData() 
     {
-
-
-
-
-
 
         CurrentGame game1 = new CurrentGame();
         CurrentGame game2 = new CurrentGame();
@@ -219,17 +200,6 @@ public partial class GamesViewModel : ObservableObject
     [RelayCommand]
     async Task ContinueGame()
     {
-
-        //await Shell.Current.GoToAsync(nameof(CurrentGamePage), true,
-        //new Dictionary<string, object>
-        //{
-        //    ["Players"] = Players,
-        //    ["TotalScoreEntered"] = enteredScore,
-        //    ["CurrentRound"] = CurrentRound,
-        //    ["CurrentGame"] = CurrentGame,
-        //    ["GamesPath"] = GamesPath,
-        //    ["GameName"] = GameName
-        //});
         Players.Clear();
         GameName = GameName.Replace("guid",CurrentGame.CurrentGameGuid.ToString());
         foreach(Player player in CurrentGame.CurrentPlayers)
