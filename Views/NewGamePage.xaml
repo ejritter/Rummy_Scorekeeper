@@ -15,19 +15,17 @@
               RowSpacing="4"
               >
 
-            <Label x:Name="Players"
+            <Image Source="group_players.png"
+                   x:Name="Players"
                    Grid.Column="0"
                    Grid.Row="0"
-                   Text="Players"
-                   FontSize="50"
-                   FontAttributes="Bold"
                    HorizontalOptions="CenterAndExpand"
                    />
 
-            <Button x:Name="addBtn"
+            <ImageButton Source="right_arrow.png"
+                    x:Name="addBtn"
                     Grid.Column="0"
                     Grid.Row="1"
-                    Text="Add"
                     Command="{Binding AddPlayerBtnCommand}"
                     HeightRequest="40"
                     HorizontalOptions="Start"
@@ -51,12 +49,11 @@
                     Completed="SetNameTextFocus"
                     />
 
-            <Label x:Name="WinningScore"
+            <Image 
+                   Source="poker_chips.png"
+                   x:Name="WinningScore"
                    Grid.Column="1"
                    Grid.Row="0"
-                   Text="Winning Score"
-                   FontSize="50"
-                   FontAttributes="Bold"
                    HorizontalOptions="CenterAndExpand"
                    />
 
@@ -76,21 +73,22 @@
                     ReturnCommand="{Binding StartGameCommand}"
                     />
             
-            <Button Grid.Column="0"
+            <ImageButton Source="playing_cards.png"
+                    Grid.Column="0"
                     Grid.Row="2"
                     HeightRequest="40"
                     HorizontalOptions="End"
                     Command="{Binding StartGameCommand}"
                     CommandParameter="{x:Reference Name=TotalScoreEntered}"
-                    Text="Start"
+
                 />
 
 
-            <Button Grid.Column="1"
+            <ImageButton Source="folded_hands.png"
+                    Grid.Column="1"
                     Grid.Row="2"
                     HeightRequest="40"
                     HorizontalOptions="Start"
-                    Text="Cancel"
                     Command="{Binding CancelBtnCommand}"
                 />
 
@@ -105,109 +103,30 @@
                             <SwipeView.LeftItems>
                                 <SwipeItems>
                                     <SwipeItem Text="Delete"
-                                    BackgroundColor="Red"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:NewGameViewModel}}, Path=DeletePlayerBtnCommand}"
-                                    CommandParameter="{Binding Name}"
+                                               BackgroundColor="{StaticResource Tertiary}"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:NewGameViewModel}}, Path=DeletePlayerBtnCommand}"
+                                               CommandParameter="{Binding Name}"
                                     />
                                 </SwipeItems>
                             </SwipeView.LeftItems>
                             <SwipeView.RightItems>
                                 <SwipeItems>
                                     <SwipeItem Text="Delete"
-                                    BackgroundColor="Red"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:NewGameViewModel}}, Path=DeletePlayerBtnCommand}"
-                                    CommandParameter="{Binding Name}"
+                                               BackgroundColor="{StaticResource Tertiary}"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:NewGameViewModel}}, Path=DeletePlayerBtnCommand}"
+                                               CommandParameter="{Binding Name}"
                                     />
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            <Frame>
-                                <Label Text="{Binding Name}"
-                                       FontSize="24"
-                                       />
-                            </Frame>
+                            <Border StrokeThickness="1">
+                  
+
+                                <Image Source="ace_spades.png"></Image>
+                            </Border>
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </Grid>
-
-
-
-        <!--<Grid RowDefinitions="100,Auto,Auto,100"
-              ColumnDefinitions="*,*">
-
-            <Label x:Name="WinningScore"
-                   Text="Enter Winning Score"
-                   FontSize="50"
-                   FontAttributes="Bold"
-                   HorizontalOptions="CenterAndExpand"
-                   Grid.ColumnSpan="2"
-                   Grid.Row="0"
-                   />
-            
-            <Entry  x:Name="Score"
-                    ClassId="Score"
-                    Text="{Binding Text}"
-                    Grid.ColumnSpan="2"
-                    Grid.Row="1"
-                    Placeholder="100 - 500"
-                    MaxLength="3"
-                    FontSize="100"
-                    HorizontalOptions="CenterAndExpand"
-                    Keyboard="Numeric"
-                    />
-
-            --><!--<CollectionView Grid.ColumnSpan="2"
-                            Grid.Row="2">
-                <CollectionView.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Name 1</x:String>
-                        <x:String>Name 2</x:String>
-                        <x:String>Name 3</x:String>
-                        <x:String>Name 4</x:String>
-                    </x:Array>
-                </CollectionView.ItemsSource>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="{x:Type x:String}">
-                        <Frame>
-                                <Label Text="{Binding .}"
-                                    FontSize="24"
-                                    />
-                            </Frame>
-                        
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>--><!--
-
-            <CollectionView Grid.ColumnSpan="2"
-                            Grid.Row="2"
-                            ItemsSource="{Binding Players}"
-                            >
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:Player">
-                        <Frame>
-                            <Label Text="{Binding Name}"
-                                       FontSize="24"
-                                       />
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-                
-            </CollectionView>
-
-            <Button Grid.Column="0"
-                    Grid.Row="3"
-                    HeightRequest="40"
-                    Command="{Binding StartGameCommand}"
-                    CommandParameter="{x:Reference Name=Score}"
-                    Text="Start Game!"
-                />
-            <Button Grid.Column="1"
-                    Grid.Row="3"
-                    HeightRequest="40"
-                    Text="Cancel!"
-                    Command="{Binding CancelBtnCommand}"
-                />
-        </Grid>-->
     </VerticalStackLayout>
 </ContentPage>

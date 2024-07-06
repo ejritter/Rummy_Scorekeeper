@@ -65,6 +65,10 @@
 	  <None Remove="Resources\Fonts\PlaywriteDEGrund-Light.ttf" />
 	  <None Remove="Resources\Fonts\PlaywriteDEGrund-Regular.ttf" />
 	  <None Remove="Resources\Fonts\PlaywriteDEGrund-Thin.ttf" />
+	  <None Remove="Resources\Images\ace_spades.svg" />
+	  <None Remove="Resources\Images\folded_hands.svg" />
+	  <None Remove="Resources\Images\group_players.svg" />
+	  <None Remove="Resources\Images\right_arrow.svg" />
 	</ItemGroup>
 
 	<ItemGroup>

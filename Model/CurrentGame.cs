@@ -8,7 +8,7 @@ public partial class CurrentGame : ObservableObject
     private bool isActive;
     private int totalScoreEntered;
     private int currentRound;
-    public List<Player> CurrentPlayers = new();
+    public List<Player> CurrentPlayers { get; set; }
     private string winningPlayer;
 
 
