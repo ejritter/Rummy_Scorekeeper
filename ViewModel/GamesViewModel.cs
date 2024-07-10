@@ -12,7 +12,7 @@ public partial class GamesViewModel : ObservableObject
         GameName = "guid_gameFile.json";
         IsEnabled = false;
         this.playerService = playerService;
-        //LoadGameFiles();
+        LoadGameFiles();
 
     }
 
@@ -51,7 +51,7 @@ public partial class GamesViewModel : ObservableObject
 
         var gameFiles = Directory.EnumerateFiles(GamesPath, "*_gameFile.json").ToList();
         LoadGameData(gameFiles);
-        //playerService.Play();
+        //playerService.Play(); 
     }
 
 

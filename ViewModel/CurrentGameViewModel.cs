@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
 using System.Collections;
 using System.Data;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 
@@ -232,9 +233,10 @@ public partial class CurrentGameViewModel : ObservableObject
     public async Task SaveGame()
     {
         var gamePath = Path.Combine(GamesPath, GameName);
-
-        await using FileStream createStream = File.Create(gamePath);
-        await JsonSerializer.SerializeAsync(createStream, gamePath);
+        using (var fileStream = File.Create(gamePath))
+        {
+            await JsonSerializer.SerializeAsync(fileStream, CurrentGame);
+        }
     }
 
     [RelayCommand]
